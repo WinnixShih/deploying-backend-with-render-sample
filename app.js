@@ -34,7 +34,7 @@ app.get('/insert_activity', async (req, res) => {
     const activityName = await getRandomActivity();
 
     if (activityName) {
-      await client.query('INSERT INTO my_activities (activity) VALUES ($1)', [activityName]);
+      await client.query('INSERT INTO restaurant (name) VALUES ($1)', [activityName]);
       client.release();
       res.status(200).json({ status: 'success', message: `Activity "${activityName}" inserted successfully` });
     } else {
@@ -49,10 +49,10 @@ app.get('/', async (req, res) => {
   try {
     const client = await pool.connect();
 
-    const countResult = await client.query('SELECT COUNT(*) FROM my_activities');
+    const countResult = await client.query('SELECT COUNT(*) FROM restaurant');
     const count = countResult.rows[0].count;
 
-    const activitiesResult = await client.query('SELECT activity FROM my_activities');
+    const activitiesResult = await client.query('SELECT name FROM restaurant');
     const activityNames = activitiesResult.rows.map(row => row.activity);
 
     client.release();
